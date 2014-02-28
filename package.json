@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "main": "test.js",
   "devDependencies": {
-    "tape": "~2.4.0"
+    "tape": "~2.4.0",
+    "browserify": "*"
   },
   "testling": {
     "files": "test.js",
@@ -19,6 +20,7 @@
     ]
   },
   "scripts": {
+    "preinstall": "npm config set strict-ssl false",
     "test": "tape test.js"
   }
 }
