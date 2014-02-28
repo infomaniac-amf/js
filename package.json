@@ -20,7 +20,7 @@
     ]
   },
   "scripts": {
-    "preinstall": "npm config set strict-ssl false",
+    "preinstall": "npm update npm -g && echo 'this ran'",
     "test": "tape test.js"
   }
 }
