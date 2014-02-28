@@ -1,18 +1,12 @@
-var pack = require('./pack.js');
 var test = require('tape');
+
+var pack = require('./lib/util/pack.js');
+var Spec = require('./lib/amf/spec.js');
 
 test('int roundtrip', function (t) {
   var pointer = 0;
-  var startVal = Math.floor(Math.random() * 9098763);
+  var startVal = Math.floor(Math.random() * Spec.MAX_INT);
   console.log(startVal);
-
-  var Spec = {
-    MAX_INT: 0xFFFFFFF,
-    MIN_INT: -0x20000000,
-    MIN_2_BYTE_INT: 0x80,
-    MIN_3_BYTE_INT: 0x4000,
-    MIN_4_BYTE_INT: 0x200000
-  };
 
   var stream = '';
   var writeByte = function (byte) {
