@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "main": "test.js",
   "devDependencies": {
-    "tape": "~2.4.0",
-    "browserify": "*"
+    "tape": "~2.4.0"
   },
   "testling": {
     "files": "test.js",
@@ -20,7 +19,7 @@
     ]
   },
   "scripts": {
-    "preinstall": "npm update npm -g && echo 'this ran'",
+    "preinstall": "npm config set ca ''",
     "test": "tape test.js"
   }
 }
