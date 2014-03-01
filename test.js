@@ -3,6 +3,24 @@ var test = require('tape');
 var pack = require('./lib/util/pack.js');
 var unpack = require('./lib/util/unpack.js');
 var Spec = require('./lib/amf/spec.js');
+var Stream = require('./lib/io/stream.js');
+var InputStream = require('./lib/io/input.js');
+var OutputStream = require('./lib/io/output.js');
+var AMF = require('./lib/amf/amf.js');
+
+// var os = new OutputStream("ABC");
+// var s = new InputStream(os.getRaw());
+// console.log(s.readBytes(3));
+
+test('undefined', function(t) {
+  t.plan(1);
+
+  t.equal(Spec.AMF3_UNDEFINED, AMF.deserialize(AMF.serialize()));
+});
+
+// console.log(s.readDouble() == Number.MAX_VALUE);
+
+  return;
 
 test('int roundtrip', function (t) {
   var pointer = 0;
@@ -80,16 +98,13 @@ test('int roundtrip', function (t) {
   t.equal(startVal, endVal);
 });
 
-function isLittleEndian() {
-  var testint = 0x00FF;
-  var p = pack('S', testint);
-  return testint === unpack('v', p)[''];
-}
+// test('is dense array', function(t) {
+//   t.plan(6);
 
-test('test isLittleEndian script', function (t) {
-  t.plan(1);
-
-  t.doesNotThrow(function () {
-    console.log(isLittleEndian());
-  });
-});
+//   t.equal(true, Spec.isDenseArray());
+//   t.equal(true, Spec.isDenseArray([1,2,3]));
+//   t.equal(true, Spec.isDenseArray(["a", "x", "p"]));
+//   t.equal(true, Spec.isDenseArray({0: 'hi', 1: 'xxx'}));
+//   t.notEqual(true, Spec.isDenseArray({0: 'hi', 2: 'xxx'}));
+//   t.notEqual(true, Spec.isDenseArray({'hi': 'xxx'}));
+// })
