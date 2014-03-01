@@ -81,8 +81,8 @@ test('int roundtrip', function (t) {
 });
 
 function endianness() {
-  var u16array = new Uint16Array([0x1234]),
-      u8array = new Uint8Array(u16array.buffer);
+  var u16array = new typedarray.Uint16Array([0x1234]),
+      u8array = new typedarray.Uint8Array(u16array.buffer);
   return u8array[0] === 0x12;
 }
 
