@@ -1,6 +1,7 @@
 var test = require('tape');
 
 var pack = require('./lib/util/pack.js');
+var typedarray = require('./lib/util/typedarray.js');
 var Spec = require('./lib/amf/spec.js');
 
 test('int roundtrip', function (t) {
@@ -80,14 +81,9 @@ test('int roundtrip', function (t) {
 });
 
 function endianness() {
-  var IsCallable = function(o) { return typeof o === 'function'; };
-  var r =function(array, index) {
-    return IsCallable(array.get) ? array.get(index) : array[index];
-  };
-
   var u16array = new Uint16Array([0x1234]),
       u8array = new Uint8Array(u16array.buffer);
-  return r(u8array, 0) === 0x12;
+  return u8array[0] === 0x12;
 }
 
 test('test endianness script', function (t) {
