@@ -15,7 +15,8 @@ var AMF = require('./lib/amf/amf.js');
 test('undefined', function(t) {
   t.plan(1);
 
-  t.equal(Spec.AMF3_UNDEFINED, AMF.deserialize(AMF.serialize()));
+  var serialized = AMF.serialize();
+  t.equal(undefined, AMF.deserialize(serialized));
 });
 
 // console.log(s.readDouble() == Number.MAX_VALUE);
