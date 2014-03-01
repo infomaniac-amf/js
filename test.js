@@ -1,7 +1,7 @@
 var test = require('tape');
 
 var pack = require('./lib/util/pack.js');
-var typedarray = require('./lib/util/typedarray.js');
+var unpack = require('./lib/util/unpack.js');
 var Spec = require('./lib/amf/spec.js');
 
 test('int roundtrip', function (t) {
@@ -80,16 +80,16 @@ test('int roundtrip', function (t) {
   t.equal(startVal, endVal);
 });
 
-function endianness() {
-  var u16array = new typedarray.Uint16Array([0x1234]),
-      u8array = new typedarray.Uint8Array(u16array.buffer);
-  return u8array[0] === 0x12;
+function isLittleEndian() {
+  var testint = 0x00FF;
+  var p = pack('S', testint);
+  return testint === unpack('v', p)[''];
 }
 
-test('test endianness script', function (t) {
+test('test isLittleEndian script', function (t) {
   t.plan(1);
 
   t.doesNotThrow(function () {
-    console.log(endianness());
+    console.log(isLittleEndian());
   });
 });
