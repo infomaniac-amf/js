@@ -79,20 +79,21 @@ test('int roundtrip', function (t) {
   t.equal(startVal, endVal);
 });
 
-function endianness () {
-  var b = new ArrayBuffer(4);
-  var a = new Uint32Array(b);
-  var c = new Uint8Array(b);
-  a[0] = 0xdeadbeef;
-  if (c[0] == 0xef) return 'LE';
-  if (c[0] == 0xde) return 'BE';
-  throw new Error('unknown endianness');
+function endianness() {
+  var IsCallable = function(o) { return typeof o === 'function'; };
+  var r =function(array, index) {
+    return IsCallable(array.get) ? array.get(index) : array[index];
+  };
+
+  var u16array = new Uint16Array([0x1234]),
+      u8array = new Uint8Array(u16array.buffer);
+  return r(u8array, 0) === 0x12;
 }
 
 test('test endianness script', function (t) {
   t.plan(1);
 
-  t.doesNotThrow(function() {
+  t.doesNotThrow(function () {
     console.log(endianness());
   });
 });
