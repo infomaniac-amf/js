@@ -21,7 +21,7 @@ test('null', function(t) {
 test('false', function(t) {
   t.plan(1);
 
-  t.equal(AMF.deserialize(AMF.serialize(false)), true);
+  t.equal(AMF.deserialize(AMF.serialize(false)), false);
 });
 
 test('true', function(t) {
