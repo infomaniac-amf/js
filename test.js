@@ -6,6 +6,9 @@ var InputStream = require('./lib/io/input.js');
 var OutputStream = require('./lib/io/output.js');
 var AMF = require('./lib/amf/amf.js');
 
+console.log(">>>> Serialized double: ", AMF.serialize(1.5, true, Spec.AMF3_DOUBLE));
+console.log(">>>> Deserialized double: ", AMF.deserialize(AMF.serialize(1.5, true, Spec.AMF3_DOUBLE), Spec.AMF3_DOUBLE));
+
 test('undefined', function(t) {
   t.plan(1);
 
