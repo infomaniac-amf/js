@@ -1,56 +1,59 @@
 var test = require('tape');
 
-var pack = require('./lib/util/pack.js');
-var unpack = require('./lib/util/unpack.js');
 var Spec = require('./lib/amf/spec.js');
 var Stream = require('./lib/io/stream.js');
 var InputStream = require('./lib/io/input.js');
 var OutputStream = require('./lib/io/output.js');
 var AMF = require('./lib/amf/amf.js');
-var util = require('util');
-var BinaryParser = require('./lib/util/binary-parser.js');
-
-test('binary parser lib', function(t) {
-  var b = new BinaryParser(!Spec.isLittleEndian(), true);
-
-  t.plan(1);
-  t.equal(98.75, b.toDouble(b.fromDouble(98.75)));
-});
-
-return;
 
 test('undefined', function(t) {
   t.plan(1);
 
-  t.equal(undefined, AMF.deserialize(AMF.serialize()));
+  t.equal(AMF.deserialize(AMF.serialize()), undefined);
 });
 
 test('null', function(t) {
   t.plan(1);
 
-  t.equal(null, AMF.deserialize(AMF.serialize(null)));
+  t.equal(AMF.deserialize(AMF.serialize(null)), null);
 });
 
 test('false', function(t) {
   t.plan(1);
 
-  t.equal(false, AMF.deserialize(AMF.serialize(false)));
+  t.equal(AMF.deserialize(AMF.serialize(false)), true);
 });
 
 test('true', function(t) {
   t.plan(1);
 
-  t.equal(true, AMF.deserialize(AMF.serialize(true)));
+  t.equal(AMF.deserialize(AMF.serialize(true)), true);
 });
 
 test('int', function(t) {
-  t.plan(1);
 
-  t.equal(100, AMF.deserialize(AMF.serialize(100)));
+  var samples = [5, 100, -100, Spec.MIN_INT, Spec.MAX_INT, -109876983];
+  t.plan(samples.length + 1);
+
+  for(var i in samples) {
+    var sample = samples[i];
+    t.equal(AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_INT)), sample);
+  }
+
+  t.throws(function() {
+    AMF.serialize(Spec.MAX_INT + 1, true, Spec.AMF3_INT);
+  }, RangeError, 'should throw RangeError')
+
 });
 
 test('double', function(t) {
-  t.plan(1);
+  t.plan(7);
 
-  t.equal(102.145, AMF.deserialize(AMF.serialize(102.145)));
+  var samples = [-10, 0.3767574, Spec.MIN_INT, Spec.MAX_INT, Math.PI, Number.MAX_VALUE, Number.MIN_VALUE, 102.145];
+  t.plan(samples.length);
+
+  for(var i in samples) {
+    var sample = samples[i];
+    t.equal(AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_DOUBLE)), sample);
+  }
 });
