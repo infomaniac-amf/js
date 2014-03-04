@@ -15,13 +15,13 @@
     "files": "test.js",
     "browsers": [
       "ie/8..latest",
-      "chrome/22..latest",
-      "firefox/16..latest",
-      "safari/latest",
-      "opera/11.0..latest",
+      "android-browser/latest",
       "iphone/6",
       "ipad/6",
-      "android-browser/latest"
+      "opera/11.0..latest",
+      "safari/latest",
+      "firefox/16..latest",
+      "chrome/22..latest"
     ]
   },
   "scripts": {

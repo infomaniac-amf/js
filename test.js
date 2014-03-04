@@ -6,6 +6,9 @@ var InputStream = require('./lib/io/input.js');
 var OutputStream = require('./lib/io/output.js');
 var AMF = require('./lib/amf/amf.js');
 
+var start = new Date();
+console.log('Tests started at ' + start);
+
 test('undefined', function(t) {
   t.plan(1);
 
@@ -68,6 +71,10 @@ test('string', function(t) {
   }
 });
 
+var end = new Date();
+console.log('Tests ended at ' + end);
+console.log('Total: ' + ((end.getTime() - start.getTime()) / 1000) + 's');
+console.log('');
 
 /**
  * Convert an ascii string to hex
