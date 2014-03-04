@@ -25,6 +25,6 @@
     ]
   },
   "scripts": {
-    "test": "tape test.js"
+    "test": "time tape test.js"
   }
 }
