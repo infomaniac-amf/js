@@ -85,6 +85,25 @@ test('date', function(t) {
   }
 });
 
+test('array', function(t) {
+  var sparse = [1,2];
+  sparse[5] = 9;
+
+  var samples = [
+    [1, 2, 3],
+    [12.345, "hello", false, ['hi', 1234, undefined]],
+    [true, false, null, "<h1>Hi</h1>"],
+    sparse
+  ];
+
+  t.plan(samples.length);
+
+  for(var i in samples) {
+    var sample = samples[i];
+    t.same(AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_ARRAY), Spec.AMF3_ARRAY), sample);
+  }
+});
+
 /**
  * Convert an ascii string to hex
  *
@@ -93,7 +112,7 @@ test('date', function(t) {
  */
 var toHex = function(x) {
   var hex = '';
-  for(var i= 0; i < x.length; i++) {
+  for(var i = 0; i < x.length; i++) {
     var byte = parseInt((x.substr(i, 1)).charCodeAt(0)).toString(16);
     hex += byte.paddingLeft('00');
   }
@@ -109,6 +128,6 @@ var toHex = function(x) {
  * @param paddingValue
  * @returns {string}
  */
-String.prototype.paddingLeft = function (paddingValue) {
+String.prototype.paddingLeft = function(paddingValue) {
   return String(paddingValue + this).slice(-paddingValue.length);
 };
