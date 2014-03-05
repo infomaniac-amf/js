@@ -9,25 +9,25 @@ var AMF = require('./lib/amf/amf.js');
 test('undefined', function(t) {
   t.plan(1);
 
-  t.equal(AMF.deserialize(AMF.serialize()), undefined);
+  t.same(AMF.deserialize(AMF.serialize()), undefined);
 });
 
 test('null', function(t) {
   t.plan(1);
 
-  t.equal(AMF.deserialize(AMF.serialize(null)), null);
+  t.same(AMF.deserialize(AMF.serialize(null)), null);
 });
 
 test('false', function(t) {
   t.plan(1);
 
-  t.equal(AMF.deserialize(AMF.serialize(false)), false);
+  t.same(AMF.deserialize(AMF.serialize(false)), false);
 });
 
 test('true', function(t) {
   t.plan(1);
 
-  t.equal(AMF.deserialize(AMF.serialize(true)), true);
+  t.same(AMF.deserialize(AMF.serialize(true)), true);
 });
 
 test('int', function(t) {
@@ -37,7 +37,7 @@ test('int', function(t) {
 
   for(var i in samples) {
     var sample = samples[i];
-    t.equal(AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_INT)), sample);
+    t.same(AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_INT)), sample);
   }
 
   t.throws(function() {
@@ -53,7 +53,7 @@ test('double', function(t) {
 
   for(var i in samples) {
     var sample = samples[i];
-    t.equal(AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_DOUBLE), Spec.AMF3_DOUBLE), sample);
+    t.same(AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_DOUBLE), Spec.AMF3_DOUBLE), sample);
   }
 });
 
@@ -69,7 +69,7 @@ test('string', function(t) {
 
   for(var s in samples) {
     var sample = samples[s];
-    t.equal(AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_STRING)), sample);
+    t.same(AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_STRING)), sample);
   }
 });
 
@@ -81,7 +81,7 @@ test('date', function(t) {
   for(var i in samples) {
     var sample = samples[i];
     var data = AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_DATE));
-    t.equal(data.getTime(), sample.getTime());
+    t.same(data, sample);
   }
 });
 
