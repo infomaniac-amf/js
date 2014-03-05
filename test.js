@@ -42,7 +42,7 @@ test('int', function(t) {
 
   t.throws(function() {
     AMF.serialize(Spec.MAX_INT + 1, true, Spec.AMF3_INT);
-  }, RangeError, 'should throw RangeError')
+  }, RangeError, 'should throw RangeError');
 
 });
 
@@ -67,8 +67,8 @@ test('string', function(t) {
   var samples = ['hello!', '', '.', 'ünicødé s†®îng', bigString];
   t.plan(samples.length);
 
-  for(var i in samples) {
-    var sample = samples[i];
+  for(var s in samples) {
+    var sample = samples[s];
     t.equal(AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_STRING)), sample);
   }
 });

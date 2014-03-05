@@ -14,7 +14,7 @@
   "testling": {
     "files": "test.js",
     "browsers": [
-      "ie/8..latest",
+      "ie/6..latest",
       "android-browser/latest",
       "iphone/6",
       "ipad/6",
