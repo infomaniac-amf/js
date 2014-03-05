@@ -59,7 +59,12 @@ test('double', function(t) {
 
 test('string', function(t) {
 
-  var samples = ['hello!', ''];
+  var bigString = '';
+  for(var i = 0; i < (Math.random() * 9999999) + 100000; i++) {
+    bigString += String.fromCharCode(Math.round(Math.random() * 91) + 65);
+  }
+
+  var samples = ['hello!', '', '.', 'ünicødé s†®îng', bigString];
   t.plan(samples.length);
 
   for(var i in samples) {
