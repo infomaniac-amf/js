@@ -73,6 +73,18 @@ test('string', function(t) {
   }
 });
 
+test('date', function(t) {
+
+  var samples = [new Date(), new Date(2011, 3, 9), new Date(1843, 1, 9), new Date(254, 1, 9), new Date(2040, 5, 12)];
+  t.plan(samples.length);
+
+  for(var i in samples) {
+    var sample = samples[i];
+    var data = AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_DATE));
+    t.equal(data.getTime(), sample.getTime());
+  }
+});
+
 /**
  * Convert an ascii string to hex
  *
