@@ -1,10 +1,8 @@
 var test = require('tape');
 
-var Spec = require('./lib/amf/spec.js');
-var Stream = require('./lib/io/stream.js');
-var InputStream = require('./lib/io/input.js');
-var OutputStream = require('./lib/io/output.js');
-var AMF = require('./lib/amf/amf.js');
+var Spec = require('./lib/amf/spec.js'),
+    AMF = require('./lib/amf/amf.js'),
+    ByteArray = require('./lib/type/bytearray.js');
 
 test('undefined', function(t) {
   t.plan(1);
@@ -86,7 +84,7 @@ test('date', function(t) {
 });
 
 test('array', function(t) {
-  var sparse = [1,2];
+  var sparse = [1, 2];
   sparse[5] = 9;
 
   var samples = [
@@ -105,12 +103,12 @@ test('array', function(t) {
 });
 
 test('object', function(t) {
-  var ref = [1,2,3];
+  var ref = [1, 2, 3];
 
   var samples = [
     {"hello": "Bob!"},
     {
-      "array": [99,100,101,
+      "array": [99, 100, 101,
         {"nesting": "of objects", "yeah?": true, ref: ref}
       ],
       "reference": ref
@@ -124,6 +122,26 @@ test('object', function(t) {
     var data = AMF.serialize(sample, true, Spec.AMF3_OBJECT);
     t.same(AMF.deserialize(data, Spec.AMF3_OBJECT), sample);
   }
+});
+
+test('bytearray', function(t) {
+
+  t.plan(2);
+
+  var simple = new ByteArray('656566');
+  var data = AMF.deserialize(AMF.serialize(simple, true, Spec.AMF3_BYTE_ARRAY));
+  t.same(data, simple);
+
+  // create a bytearray with serialize AMF data, serialize the bytearray, deserialize the bytearray and then deserialize the AMF data
+  // #meta
+
+  var obj = {it: "works!"};
+  var amf = new ByteArray(AMF.serialize(obj, true, Spec.AMF3_OBJECT));
+  var serialized = AMF.serialize(amf, true, Spec.AMF3_BYTE_ARRAY);
+  var deserialized = AMF.deserialize(serialized, Spec.AMF3_BYTE_ARRAY);
+
+  t.same(AMF.deserialize(deserialized.getData(), Spec.AMF3_OBJECT), obj);
+
 });
 
 /**
