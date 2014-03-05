@@ -1,6 +1,6 @@
 {
   "name": "infomaniac-amf",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "main": "test.js",
   "devDependencies": {
     "tape": "~2.4.0",
