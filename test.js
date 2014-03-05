@@ -91,7 +91,7 @@ test('array', function(t) {
 
   var samples = [
     [1, 2, 3],
-    [12.345, "hello", false, ['hi', 1234, undefined]],
+    [12.345, "hello", false, ['hi', 1234]],
     [true, false, null, "<h1>Hi</h1>"],
     sparse
   ];
@@ -101,6 +101,28 @@ test('array', function(t) {
   for(var i in samples) {
     var sample = samples[i];
     t.same(AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_ARRAY), Spec.AMF3_ARRAY), sample);
+  }
+});
+
+test('object', function(t) {
+  var ref = [1,2,3];
+
+  var samples = [
+    {"hello": "Bob!"},
+    {
+      "array": [99,100,101,
+        {"nesting": "of objects", "yeah?": true, ref: ref}
+      ],
+      "reference": ref
+    }
+  ];
+
+  t.plan(samples.length);
+
+  for(var i in samples) {
+    var sample = samples[i];
+    var data = AMF.serialize(sample, true, Spec.AMF3_OBJECT);
+    t.same(AMF.deserialize(data, Spec.AMF3_OBJECT), sample);
   }
 });
 
