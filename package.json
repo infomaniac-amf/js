@@ -15,7 +15,6 @@
     "files": "test.js",
     "browsers": [
       "ie/6..latest",
-      "android-browser/latest",
       "iphone/6",
       "ipad/6",
       "opera/11.0..latest",
