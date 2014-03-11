@@ -30,12 +30,14 @@ test('true', function(t) {
 
 test('int', function(t) {
 
-  var samples = [5, 100, -100, Spec.MIN_INT, Spec.MAX_INT, -109876983];
+  var samples = [5, 100, -100, 100878, -199, Spec.MIN_INT, Spec.MAX_INT, -109876983];
   t.plan(samples.length + 1);
 
   for(var i in samples) {
     var sample = samples[i];
-    t.same(AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_INT)), sample);
+
+    var data = AMF.serialize(sample, true, Spec.AMF3_INT);
+    t.same(AMF.deserialize(data), sample);
   }
 
   t.throws(function() {
@@ -62,12 +64,12 @@ test('string', function(t) {
     bigString += String.fromCharCode(Math.round(Math.random() * 91) + 65);
   }
 
-  var samples = ['hello!', '', '.', 'ünicødé s†®îng', bigString];
+  var samples = ['hello!', '', '.', 'i ❤ π', bigString];
   t.plan(samples.length);
 
   for(var s in samples) {
     var sample = samples[s];
-    t.same(AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_STRING)), sample);
+    t.same(AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_STRIG)), sample);
   }
 });
 
@@ -143,31 +145,3 @@ test('bytearray', function(t) {
   t.same(AMF.deserialize(deserialized.getData(), Spec.AMF3_OBJECT), obj);
 
 });
-
-/**
- * Convert an ascii string to hex
- *
- * @param x
- * @returns {string}
- */
-var toHex = function(x) {
-  var hex = '';
-  for(var i = 0; i < x.length; i++) {
-    var byte = parseInt((x.substr(i, 1)).charCodeAt(0)).toString(16);
-    hex += byte.paddingLeft('00');
-  }
-
-  return hex;
-};
-
-/**
- * Pad a string with a given value
- *
- * @link http://stackoverflow.com/a/14760377/385265
- *
- * @param paddingValue
- * @returns {string}
- */
-String.prototype.paddingLeft = function(paddingValue) {
-  return String(paddingValue + this).slice(-paddingValue.length);
-};
