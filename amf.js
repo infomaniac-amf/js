@@ -1,8 +1,15 @@
 var amf = require('./lib/amf/amf.js'),
     Spec = require('./lib/amf/spec.js'),
+    ByteArray = require('./lib/type/bytearray.js'),
     utf8 = require('utf8'),
     base64 = require('base64-js'),
     tape = require('tape');
+
+window.AMF = amf;
+window.Spec = Spec;
+window.utf8 = utf8;
+window.base64 = base64;
+window.tape = tape;
 
 var guy = {name: 'Danny'};
 var bro = {name: 'Brad'};
@@ -14,6 +21,8 @@ epoch.setMilliseconds(0);
 
 var now = new Date();
 now.setMilliseconds(0);
+
+var bytes = new ByteArray(AMF.serialize({meta: 'inception'}));
 
 var tests = [
   // strings
@@ -59,12 +68,35 @@ var tests = [
   // plain objects
   ['empty object', {} ],
   ['keyed object', { foo: 'bar', 'foo bar': 'baz' } ],
-  ['circular object', guy ]
+  ['circular object', guy ],
+  ['bytearray', bytes, Spec.AMF3_BYTE_ARRAY]
 ];
 
-window.AMF = amf;
-window.Spec = Spec;
-window.utf8 = utf8;
-window.base64 = base64;
-window.tape = tape;
 window.tests = tests;
+
+window.sendAMFData = function(url, data, callback) {
+  if(!XMLHttpRequest.prototype.sendAsBinary) {
+    XMLHttpRequest.prototype.sendAsBinary = function(sData) {
+      var nBytes = sData.length, ui8Data = new Uint8Array(nBytes);
+      for(var nIdx = 0; nIdx < nBytes; nIdx++) {
+        ui8Data[nIdx] = sData.charCodeAt(nIdx) & 0xff;
+      }
+
+      this.send(ui8Data.buffer);
+    };
+  }
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", url, false);
+  xhr.setRequestHeader("Content-Type", "application/x-amf");
+  xhr.overrideMimeType("application/x-amf; charset=x-user-defined");
+//  xhr.responseType = "raw";
+
+  xhr.onreadystatechange = function() {
+    callback.apply(this, [xhr]);
+  };
+
+  xhr.sendAsBinary(data);
+};
+
+console.log(">>>");
