@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="dist/amf.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    (function() {
+
+        var data = {name: 'Earl', catchphrase: 'i ❤ π'};
+        var serialized = AMF.stringify(data);
+        var deserialized = AMF.parse(serialized);
+        console.log(serialized);
+        console.log(deserialized);
+
+    })();
+</script>
+</body>
+</html>
