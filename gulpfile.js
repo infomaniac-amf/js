@@ -7,7 +7,7 @@ var browserify = require('gulp-browserify'),
 // Basic usage
 gulp.task('default', function() {
 
-  gulp.watch(['amf.js'], function(e) {
+  gulp.watch(['amf.js', 'lib/**/*.js'], function(e) {
     gulp.src('amf.js')
         .pipe(browserify({
           insertGlobals: true
