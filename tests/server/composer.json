@@ -1,0 +1,5 @@
+{
+  "require": {
+    "infomaniac-amf/php": "0.7.0"
+  }
+}

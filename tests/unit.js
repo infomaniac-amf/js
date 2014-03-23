@@ -1,7 +1,7 @@
 var test = require('tape');
 
+var AMF = require('./../lib/amf/amf.js');
 var Spec = require('./../lib/amf/spec.js'),
-    AMF = require('./../lib/amf/amf.js'),
     ByteArray = require('./../lib/type/bytearray.js'),
     Buffer = require('buffer').Buffer;
 
@@ -125,6 +125,52 @@ test('object', function(t) {
     var data = AMF.serialize(sample, true, Spec.AMF3_OBJECT);
     t.same(AMF.deserialize(data, Spec.AMF3_OBJECT), sample);
   }
+});
+
+test('class mapping', function(t) {
+
+  var Something = function() {};
+
+  Something.prototype = {
+    _classMapping: 'SomethingClass',
+    doSomething: function() {
+      console.log('Something was done!');
+    }
+  };
+
+  AMF.registerClassAlias('SomethingClass', Something);
+  var test = new Something();
+
+  t.plan(1);
+
+  t.equals(true, AMF.parse(AMF.stringify(test, AMF.CLASS_MAPPING)) instanceof Something);
+});
+
+test('class mapping + serializable', function(t) {
+
+  var Serializable = function() {};
+
+  Serializable.prototype = {
+    _classMapping: 'SerializableClass',
+    property: 'value',
+    exportData: function() {
+      return {property: this.property}
+    },
+    importData: function(data) {
+      for(var key in data) {
+        this[key] = data[key];
+      }
+    }
+  };
+
+  AMF.registerClassAlias('SerializableClass', Serializable);
+  var test = new Serializable();
+
+  t.plan(2);
+
+  var tested = AMF.parse(AMF.stringify(test, AMF.CLASS_MAPPING));
+  t.equals(true, tested instanceof Serializable);
+  t.same({property: 'value'}, tested);
 });
 
 test('bytearray', function(t) {

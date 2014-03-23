@@ -32,6 +32,31 @@
             };
 
             CustomClass.prototype = {_classMapping: 'XXX'};
+            AMF.registerClassAlias('XXX', CustomClass);
+
+            var SerializableCustomClass = function() {
+
+            };
+
+            SerializableCustomClass.prototype._classMapping = 'YYY';
+            SerializableCustomClass.prototype.properties = {
+                sample: 'export',
+                data: 'output'
+            };
+
+            SerializableCustomClass.prototype.exportData = function() {
+                return this.properties;
+            };
+
+            SerializableCustomClass.prototype.importData = function(data) {
+                for(var key in data) {
+                    this.properties[key] = data[key];
+                }
+            };
+
+            AMF.registerClassAlias('YYY', SerializableCustomClass);
+
+            // TODO: convert these into individual tests
 
             var tests = [
                 // strings
@@ -79,6 +104,7 @@
                 ['keyed object', { foo: 'bar', 'foo bar': 'baz' } ],
                 ['circular object', guy ],
                 ['class mapping', new CustomClass() ],
+                ['serializable + class mapping', new SerializableCustomClass()],
                 ['bytearray', new ByteArray(AMF.serialize({meta: 'inception'})), Spec.AMF3_BYTE_ARRAY]
             ];
 
@@ -86,9 +112,9 @@
                 var test = tests[test];
 
                 var forceType = test.length > 2 ? test[2] : undefined;
-                var serialized = AMF.serialize(test[1], true, forceType, AMF_CLASS_MAPPING);
+                var serialized = AMF.serialize(test[1], true, forceType, AMF.CLASS_MAPPING);
 
-                sendAMFData('/php/server.php', serialized, callback);
+                sendAMFData('/js/tests/server/server.php', serialized, callback);
             }
 
             tape('Integration tests', function(t) {
