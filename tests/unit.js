@@ -189,6 +189,6 @@ test('bytearray', function(t) {
   var serialized = AMF.serialize(amf, true, Spec.AMF3_BYTE_ARRAY);
   var deserialized = AMF.deserialize(serialized, Spec.AMF3_BYTE_ARRAY);
 
-  t.same(AMF.deserialize(deserialized.getData(), Spec.AMF3_OBJECT), obj);
+  t.same(AMF.deserialize(deserialized, Spec.AMF3_OBJECT), obj);
 
 });
