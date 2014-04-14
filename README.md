@@ -89,11 +89,12 @@ If we encode an instance of this object, by default its class type will be ignor
 
 ```js
 var Person = function() {
-	this.name = 'Bob';
 	this._classMapping = 'Person';
 };
 
 var data = new Person();
+data.name = "Bob";
+
 var encodedData = AMF.stringify(data);
 console.log(AMF.parse(encodedData));
 ```
@@ -112,11 +113,11 @@ In order to retain the class type in `AMF`, you will need to add the following:
 
 ```js
 var Person = function() {
-	this.name = 'Bob';
 	this._classMapping = 'Person';
 };
 
 var data = new Person();
+data.name = "Bob";
 
 var encodedData = AMF.stringify(data, AMF.CLASS_MAPPING);
 AMF.registerClassAlias('Person', Person);
@@ -127,7 +128,7 @@ console.log(AMF.parse(encodedData));
 Now, when this data is decoded, the library will attempt to create a new instance of the `Person` class and set its public property `name` to `"Bob"`.
 
 ```js
-Person {name: "Bob", _classMapping: "Person"}
+Person {_classMapping: "Person", name: "Bob"} 
 ```
 
 ## Data Encoding (Serialization)
