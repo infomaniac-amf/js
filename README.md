@@ -6,11 +6,11 @@
 
 ## Intro
 
-**AMF** (Action Message Format) is a binary data serialization protocol. Simply put, it transforms objects in memory into a binary string, and can reverse this binary string into an object in memory. It can be used just like `JSON`, and this library has been build to provide a similar API to that exposed by the `JSON` functionality in `PHP`.
+**AMF** (Action Message Format) is a binary data serialization protocol. Simply put, it transforms objects in memory into a binary string, and can reverse this binary string into an object in memory. It can be used just like `JSON`, and this library has been build to provide a similar API to that exposed by the `JSON` functionality in `JavaScript`.
 
 ### Purpose
 
-The purpose of this library is to provide a consistent and symmetric implementation of the `AMF` specification in both `PHP` & `JSON`.
+The purpose of this library is to provide a consistent and symmetric implementation of the `AMF` specification in both `PHP` & `JavaScript`.
 
 ### Why use AMF?
 
