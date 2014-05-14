@@ -1,9 +1,14 @@
 var test = require('tape');
 
-var AMF = require('./../lib/amf/amf.js');
-var Spec = require('./../lib/amf/spec.js'),
+var AMF = require('./../lib/amf/amf.js'),
+    Spec = require('./../lib/amf/spec.js'),
     ByteArray = require('./../lib/type/bytearray.js'),
-    Buffer = require('buffer').Buffer;
+    Buffer = require('buffer').Buffer,
+    Deserializer = require('./../lib/amf/deserializer.js'),
+
+    NotSupportedException = require('./../lib/exception/not-supported.js'),
+    SerializationException = require('./../lib/exception/serialization.js'),
+    DeserializationException = require('./../lib/exception/deserialization.js');
 
 test('undefined', function(t) {
   t.plan(1);
@@ -191,4 +196,40 @@ test('bytearray', function(t) {
 
   t.same(AMF.deserialize(deserialized, Spec.AMF3_OBJECT), obj);
 
+});
+
+test('NotSupportedException', function(t) {
+  t.plan(1);
+
+  try
+  {
+    AMF.stringify(function(){});
+  }
+  catch (e) {
+    if (e instanceof NotSupportedException) {
+      t.pass();
+    }
+  }
+});
+
+test('DeserializationException', function(t) {
+  t.plan(1);
+
+  var deserializer = new Deserializer();
+
+  deserializer.stream = {
+    readByte: function() {
+      return 999;
+    }
+  };
+
+  try
+  {
+    deserializer.deserialize();
+  }
+  catch (e) {
+    if (e instanceof DeserializationException) {
+      t.pass();
+    }
+  }
 });
