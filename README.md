@@ -1,4 +1,5 @@
 ## AMF serialization & deserialization in JS
+**Status**: [![Build Status](https://travis-ci.org/infomaniac-amf/js.svg?branch=master)](https://travis-ci.org/infomaniac-amf/js)
 
 ### Cross-browser compatibility
 [![browser support](https://ci.testling.com/infomaniac-amf/js.png)
