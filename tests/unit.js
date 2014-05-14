@@ -4,8 +4,11 @@ var AMF = require('./../lib/amf/amf.js'),
     Spec = require('./../lib/amf/spec.js'),
     ByteArray = require('./../lib/type/bytearray.js'),
     Buffer = require('buffer').Buffer,
-    exception = require('./../lib/amf/exception.js')
-    Deserializer = require('./../lib/amf/deserializer.js');
+    Deserializer = require('./../lib/amf/deserializer.js'),
+
+    NotSupportedException = require('./../lib/exception/not-supported.js'),
+    SerializationException = require('./../lib/exception/serialization.js'),
+    DeserializationException = require('./../lib/exception/deserialization.js');
 
 test('undefined', function(t) {
   t.plan(1);
@@ -203,7 +206,7 @@ test('NotSupportedException', function(t) {
     AMF.stringify(function(){});
   }
   catch (e) {
-    if (e instanceof exception.NotSupportedException) {
+    if (e instanceof NotSupportedException) {
       t.pass();
     }
   }
@@ -225,7 +228,7 @@ test('DeserializationException', function(t) {
     deserializer.deserialize();
   }
   catch (e) {
-    if (e instanceof exception.DeserializationException) {
+    if (e instanceof DeserializationException) {
       t.pass();
     }
   }
